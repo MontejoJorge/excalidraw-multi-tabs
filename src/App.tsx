@@ -30,6 +30,7 @@ function App() {
 
       saveTab(currentTabId, updatedTab);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [currentTabId],
   );
 

@@ -1,0 +1,31 @@
+.tab {
+  align-items: center;
+  background-color: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  font-size: 14px;
+  font-weight: 400;
+  gap: 10px;
+  height: 100%;
+  padding: 0 1rem;
+  user-select: none;
+
+  &:hover {
+    background-color: #f1f0ff; /*--button-hover-bg*/
+  }
+
+  &.active {
+    background-color: #e0dfff; /*--color-surface-primary-container*/
+  }
+
+  & button {
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 4px;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+}

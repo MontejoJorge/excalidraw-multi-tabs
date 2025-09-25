@@ -1,6 +1,27 @@
 .tabBar {
-  display: flex;
   align-items: center;
-  background-color: #FFFFFF;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: #FFFFFF; /* --island-bg-color */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1); /*--sidebar-border-color*/
+  display: flex;
+  font-family: Assistant, sans-serif;
+  gap: 4px;
+  max-height: 44px;
+  min-height: 44px;
+  padding: 4px 16px;
+}
+
+.createTabButton {
+  align-items: center;
+  background-color: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  gap: 10px;
+  height: 100%;
+  padding: 0.3rem;
+  user-select: none;
+
+  &:hover {
+    background-color: #f1f0ff; /*--button-hover-bg*/
+  }
 }

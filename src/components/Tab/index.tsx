@@ -1,4 +1,8 @@
+import clsx from 'clsx';
+
 import type { ITab } from '../../types';
+import { TrashIcon } from '../icons';
+import styles from './style.module.css';
 
 interface TabProps {
   tab: ITab;
@@ -12,21 +16,21 @@ const Tab = ({ tab, setCurrentTabId, currentTabId, deleteTab }: TabProps) => {
 
   return (
     <div
+      className={clsx(styles.tab, { [styles.active]: isActive })}
       onClick={() => setCurrentTabId(tab.id)}
-      style={{
-        color: isActive ? 'red' : 'inherit',
-        cursor: 'pointer',
-      }}
     >
       {tab.title}
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          deleteTab(tab.id);
-        }}
-      >
-        x
-      </button>
+      {isActive && (
+        <button
+          className={clsx({ [styles.active]: isActive })}
+          onClick={(e) => {
+            e.stopPropagation();
+            deleteTab(tab.id);
+          }}
+        >
+          <TrashIcon />
+        </button>
+      )}
     </div>
   );
 };

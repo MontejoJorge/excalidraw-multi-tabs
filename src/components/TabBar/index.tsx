@@ -1,4 +1,5 @@
 import type { ITab } from '../../types';
+import { PlusIcon } from '../icons';
 import Tab from '../Tab';
 import style from './style.module.css';
 
@@ -28,7 +29,9 @@ const TabBar: React.FC<TabBarProps> = ({
           deleteTab={deleteTab}
         />
       ))}
-      <button onClick={createTab}>+</button>
+      <button className={style.createTabButton} onClick={createTab}>
+        <PlusIcon />
+      </button>
     </div>
   );
 };
