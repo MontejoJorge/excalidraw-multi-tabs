@@ -16,9 +16,13 @@ const Tab = ({ tab, setCurrentTabId, currentTabId, deleteTab }: TabProps) => {
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
-    const isConfirmed = confirm(
-      'This is a destructive action. Are you sure you want to delete this tab?',
-    );
+
+    if (tab.elements.length === 0) {
+      deleteTab(tab.id);
+      return;
+    }
+
+    const isConfirmed = confirm('Are you sure you want to delete this tab?');
     if (!isConfirmed) return;
     deleteTab(tab.id);
   };
