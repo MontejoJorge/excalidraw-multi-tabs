@@ -14,6 +14,15 @@ interface TabProps {
 const Tab = ({ tab, setCurrentTabId, currentTabId, deleteTab }: TabProps) => {
   const isActive = currentTabId === tab.id;
 
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const isConfirmed = confirm(
+      'This is a destructive action. Are you sure you want to delete this tab?',
+    );
+    if (!isConfirmed) return;
+    deleteTab(tab.id);
+  };
+
   return (
     <div
       className={clsx(styles.tab, { [styles.active]: isActive })}
@@ -23,10 +32,7 @@ const Tab = ({ tab, setCurrentTabId, currentTabId, deleteTab }: TabProps) => {
       {isActive && (
         <button
           className={clsx({ [styles.active]: isActive })}
-          onClick={(e) => {
-            e.stopPropagation();
-            deleteTab(tab.id);
-          }}
+          onClick={handleDelete}
         >
           <TrashIcon />
         </button>

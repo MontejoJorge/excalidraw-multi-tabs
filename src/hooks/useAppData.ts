@@ -60,10 +60,13 @@ const useAppData = () => {
   const deleteTab = (tabId: number) => {
     setAppData((data) => {
       if (data.tabs.length === 1) return data;
-      const newTabs = data.tabs.filter((tab) => tab.id !== tabId);
+      const delTabIndex = data.tabs.findIndex((tab) => tab.id === tabId);
+      const newTabs = [...data.tabs];
+      newTabs.splice(delTabIndex, 1);
       return {
         tabs: newTabs,
-        currentTabId: newTabs[0].id,
+        currentTabId:
+          delTabIndex > 0 ? newTabs[delTabIndex - 1].id : newTabs[0].id,
       };
     });
   };
