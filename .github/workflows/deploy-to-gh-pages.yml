@@ -21,9 +21,9 @@ jobs:
       with:
         version: 10
     - name: Install dependencies
-      run: pnpm install
+      run: pnpm install --frozen-lockfile
     - name: Build static files
-      run: pnpm run build
+      run: pnpm run build -- --base=/${{ github.event.repository.name }}/
     - name: Upload build
       uses: actions/upload-pages-artifact@v4
       with:
