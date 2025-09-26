@@ -1,0 +1,39 @@
+name: Deploy to Github Pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "master" ]
+
+permissions:
+  pages: write
+  id-token: writen
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+    - name: Set up pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 10
+    - name: Install dependencies
+      run: pnpm install
+    - name: Build static files
+      run: pnpm run build
+    - name: Upload build
+      uses: actions/upload-pages-artifact@v4
+      with:
+        path: './dist'
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - name: Deploy to GitHub pages
+      uses: actions/deploy-pages@v4
+      
+    
