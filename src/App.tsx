@@ -4,11 +4,11 @@ import type { AppState } from '@excalidraw/excalidraw/types';
 import { useCallback } from 'react';
 
 import TabBar from './components/TabBar';
-import useAppData from './hooks/useAppData';
+import { useAppStore } from './store';
 
 function App() {
   const { tabs, currentTabId, setCurrentTabId, createTab, saveTab, deleteTab } =
-    useAppData();
+    useAppStore();
 
   const currentTab = tabs.find((t) => t.id === currentTabId) || tabs[0];
 
