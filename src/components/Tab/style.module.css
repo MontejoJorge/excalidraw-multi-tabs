@@ -4,12 +4,13 @@
   border-radius: 6px;
   cursor: pointer;
   display: flex;
-  font-size: 14px;
   font-weight: 400;
   gap: 10px;
-  height: 100%;
-  padding: 0 1rem;
+  font-size: 12px;
+  height: 36px;
+  padding: 10px;
   user-select: none;
+  color: #1b1b1f; /*--text-primary-color*/
 
   &:hover {
     background-color: #f1f0ff; /*--button-hover-bg*/
