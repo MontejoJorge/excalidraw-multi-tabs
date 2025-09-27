@@ -1,13 +1,17 @@
-.tabBar {
-  align-items: center;
-  background-color: #FFFFFF; /* --island-bg-color */
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1); /*--sidebar-border-color*/
+.container {
   display: flex;
-  font-family: Assistant, sans-serif;
-  gap: 4px;
   max-height: 44px;
   min-height: 44px;
-  padding: 4px 16px;
+  padding: 4px;
+  background-color: #FFFFFF; /* --island-bg-color */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1); /*--sidebar-border-color*/
+  font-family: Assistant, sans-serif;
+}
+
+.tabBar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .createTabButton {
@@ -24,4 +28,10 @@
   &:hover {
     background-color: #f1f0ff; /*--button-hover-bg*/
   }
+}
+
+.loadButton {
+  margin-left: auto;
+  background-color: #6965db; /*--color-primary*/
+  cursor: pointer;
 }
