@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import type { ITab } from '../../types';
-import { decompressData } from '../../utils/encryption';
+import { decompressData } from '../../utils/encode';
 import { PlusIcon } from '../icons';
 import Tab from '../Tab';
 import style from './style.module.css';
