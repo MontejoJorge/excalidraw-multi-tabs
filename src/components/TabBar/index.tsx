@@ -1,55 +1,38 @@
-import axios from 'axios';
-
+import { useAppStore } from '../../store';
 import type { ITab } from '../../types';
-import { decompressData } from '../../utils/encode';
+import { getExcalidrawBoard } from '../../utils/import';
 import { PlusIcon } from '../icons';
 import Tab from '../Tab';
 import style from './style.module.css';
 
-interface TabBarProps {
-  tabs: ITab[];
-  currentTabId: number;
-  setCurrentTabId: (id: number) => void;
-  createTab: () => void;
-  deleteTab: (id: number) => void;
-}
+const TabBar = () => {
+  const { tabs, currentTabId, setCurrentTabId, createTab, deleteTab, saveTab } =
+    useAppStore();
 
-const TabBar: React.FC<TabBarProps> = ({
-  tabs,
-  currentTabId,
-  setCurrentTabId,
-  createTab,
-  deleteTab,
-}) => {
   const handleLoadBtnClick = async () => {
     const excalidrawUrl = prompt('Excalidraw url');
     if (!excalidrawUrl) return;
 
-    const frag = excalidrawUrl.split('#')[1];
+    const excalidrawBoard = await getExcalidrawBoard(excalidrawUrl);
 
-    const jsonParam = new URLSearchParams(frag).get('json') || '';
-    const [fileKey, privateKey] = jsonParam.split(',');
+    const newTabId = createTab();
 
-    const response = (
-      await axios.get(`https://json.excalidraw.com/api/v2/${fileKey}`, {
-        responseType: 'arraybuffer',
-      })
-    ).data;
+    const newTabData: ITab = {
+      id: newTabId,
+      title: 'Imported board',
+      elements: excalidrawBoard.elements,
+      appState: {
+        viewBackgroundColor: excalidrawBoard.appState.viewBackgroundColor,
+      },
+    };
 
-    if (!(response instanceof ArrayBuffer)) {
-      throw new Error('Unexpected data');
-    }
+    saveTab(newTabId, newTabData);
+    setCurrentTabId(newTabId);
+  };
 
-    const uint8Array = new Uint8Array(response);
-
-    const { data: decompressedData } = await decompressData(uint8Array, {
-      decryptionKey: privateKey,
-    });
-
-    const jsonString = new TextDecoder().decode(decompressedData);
-    const excalidrawData = JSON.parse(jsonString);
-
-    console.log(excalidrawData);
+  const handleCreateTabBtnClicl = () => {
+    const newTabId = createTab();
+    setCurrentTabId(newTabId);
   };
 
   return (
@@ -65,11 +48,14 @@ const TabBar: React.FC<TabBarProps> = ({
           />
         ))}
       </div>
-      <button className={style.createTabButton} onClick={createTab}>
+      <button
+        className={style.createTabButton}
+        onClick={handleCreateTabBtnClicl}
+      >
         <PlusIcon />
       </button>
       <button className={style.loadButton} onClick={handleLoadBtnClick}>
-        Import
+        Import from Excalidraw
       </button>
     </div>
   );

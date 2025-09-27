@@ -5,7 +5,7 @@ import { getAppData, saveAppData } from '../utils/storage-utils';
 
 interface AppStoreState extends AppData {
   setCurrentTabId: (id: number) => void;
-  createTab: () => void;
+  createTab: () => number;
   saveTab: (id: number, updatedTab: ITab) => void;
   deleteTab: (tabId: number) => void;
 }
@@ -42,20 +42,23 @@ export const useAppStore = create<AppStoreState>()((set) => {
     },
 
     createTab: () => {
+      let newTabId: number = -1;
       set((state) => {
+        newTabId = state.tabs.length;
         const newTab: ITab = {
-          id: state.tabs.length,
+          id: newTabId,
           title: `Tab ${state.tabs.length + 1}`,
           elements: [],
           appState: {},
         };
         const newAppData: AppData = {
           tabs: [...state.tabs, newTab],
-          currentTabId: newTab.id,
+          currentTabId: state.currentTabId,
         };
         saveAppData(newAppData);
         return newAppData;
       });
+      return newTabId;
     },
 
     saveTab: (id: number, updatedTab: ITab) => {
