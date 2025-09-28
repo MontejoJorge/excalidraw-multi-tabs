@@ -15,7 +15,7 @@
     "prettier": "prettier --write .",
     "lint": "eslint . --max-warnings 0",
     "lint:fix": "eslint . --fix",
-    "typecheck": "pnpm -r run typecheck",
+    "typecheck": "tsc --noEmit",
     "preview": "vite preview"
   },
   "dependencies": {
