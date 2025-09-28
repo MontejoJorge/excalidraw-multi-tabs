@@ -32,6 +32,7 @@ const ImportModal = () => {
     register,
     reset,
     setValue,
+    setError,
     formState: { errors },
   } = useForm<InputForm>({
     resolver: zodResolver(schema),
@@ -43,23 +44,35 @@ const ImportModal = () => {
   };
 
   const onSubmit: SubmitHandler<InputForm> = async ({ excalidrawUrl }) => {
-    const excalidrawBoard = await getExcalidrawBoard(excalidrawUrl);
+    try {
+      const excalidrawBoard = await getExcalidrawBoard(excalidrawUrl);
 
-    const newTabId = createTab();
+      const newTabId = createTab();
 
-    const newTabData: ITab = {
-      id: newTabId,
-      title: 'Imported board',
-      elements: excalidrawBoard.elements,
-      appState: {
-        viewBackgroundColor: excalidrawBoard.appState.viewBackgroundColor,
-      },
-    };
+      const newTabData: ITab = {
+        id: newTabId,
+        title: 'Imported board',
+        elements: excalidrawBoard.elements,
+        appState: {
+          viewBackgroundColor: excalidrawBoard.appState.viewBackgroundColor,
+        },
+      };
 
-    saveTab(newTabId, newTabData);
-    setCurrentTabId(newTabId);
-    setIsModalOpen(false);
-    reset();
+      saveTab(newTabId, newTabData);
+      setCurrentTabId(newTabId);
+      setIsModalOpen(false);
+      reset();
+    } catch (error) {
+      let errorMsg = 'Failed to load Excalidraw board. Unknown error';
+      if (error instanceof Error && error.message) {
+        errorMsg = error.message;
+      }
+
+      setError('excalidrawUrl', {
+        type: 'manual',
+        message: errorMsg,
+      });
+    }
   };
 
   return (

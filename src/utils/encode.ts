@@ -45,29 +45,23 @@ export const decompressData = async <T extends Record<string, unknown>>(
   const encodingMetadata: FileEncodingInfo = JSON.parse(
     new TextDecoder().decode(encodingMetadataBuffer),
   );
+  let decryptedBuffer = new Uint8Array(
+    await decryptData(iv, buffer, options.decryptionKey),
+  );
 
-  try {
-    let decryptedBuffer = new Uint8Array(
-      await decryptData(iv, buffer, options.decryptionKey),
-    );
-
-    if (encodingMetadata.compression) {
-      decryptedBuffer = inflate(decryptedBuffer);
-    }
-
-    const [contentsMetadataBuffer, contentsBuffer] =
-      splitBuffers(decryptedBuffer);
-
-    const metadata = JSON.parse(
-      new TextDecoder().decode(contentsMetadataBuffer),
-    ) as T;
-
-    return {
-      metadata,
-      data: contentsBuffer,
-    };
-  } catch (error) {
-    console.error('Coudnt decompress the data');
-    throw error;
+  if (encodingMetadata.compression) {
+    decryptedBuffer = inflate(decryptedBuffer);
   }
+
+  const [contentsMetadataBuffer, contentsBuffer] =
+    splitBuffers(decryptedBuffer);
+
+  const metadata = JSON.parse(
+    new TextDecoder().decode(contentsMetadataBuffer),
+  ) as T;
+
+  return {
+    metadata,
+    data: contentsBuffer,
+  };
 };

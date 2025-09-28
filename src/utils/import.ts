@@ -20,10 +20,15 @@ export const getExcalidrawBoard = async (url: string) => {
 
   const uint8Array = new Uint8Array(response);
 
-  const { data: decompressedData } = await decompressData(uint8Array, {
-    decryptionKey: privateKey,
-  });
+  try {
+    const { data: decompressedData } = await decompressData(uint8Array, {
+      decryptionKey: privateKey,
+    });
 
-  const jsonString = new TextDecoder().decode(decompressedData);
-  return JSON.parse(jsonString);
+    const jsonString = new TextDecoder().decode(decompressedData);
+    return JSON.parse(jsonString);
+  } catch (error) {
+    console.log(error);
+    throw new Error('Could not decrypt or decompress the board data');
+  }
 };
