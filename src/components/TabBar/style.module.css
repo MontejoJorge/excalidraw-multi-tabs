@@ -27,15 +27,3 @@
     background-color: #f1f0ff; /*--button-hover-bg*/
   }
 }
-
-.loadButton {
-  margin-left: auto;
-  background-color: #6965db; /*--color-primary*/
-  color: white;
-  cursor: pointer;
-  border-radius: 6px;
-  font-family: Assistant, sans-serif;
-  font-size: 12px;
-  height: 36px;
-  padding: 10px;
-}

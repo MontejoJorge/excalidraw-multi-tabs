@@ -1,0 +1,46 @@
+.loadButton {
+  background-color: #6965db; /*--color-primary*/
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font-size: 12px;
+  height: 36px;
+  margin-left: auto;
+  padding: 10px;
+}
+
+.title {
+  color: #6965db;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.body {
+  font-size: .875rem;
+  line-height: 150%;
+}
+
+.input {
+  border: 1.5px solid #c5c5d0;
+  border-radius: 6px;
+  color: #2f2f3b;
+  font-size: 1rem;
+  font-weight: 400;
+  height: 3rem;
+  margin-top: .5rem;
+  outline: none;
+  padding: 8px 12px;
+  transition: border-color 0.2s;
+  width: 100%;
+
+  &:focus {
+    background: #fff;
+    border-color: #6965db;
+  }
+}
+
+.error {
+  color: red;
+  margin-top: .5rem;
+}
