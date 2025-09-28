@@ -1,10 +1,11 @@
 name: Quality checks 👌🧪
 
-workflow_call:
-  inputs:
-    commit:
-      required: true
-      type: string
+on:
+  workflow_call:
+    inputs:
+      commit:
+        required: true
+        type: string
 
 jobs:
   name: Run ${{ matrix.command }}
