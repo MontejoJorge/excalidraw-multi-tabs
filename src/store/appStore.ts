@@ -6,7 +6,7 @@ import { getAppData, saveAppData } from '../utils/storage-utils';
 interface AppStoreState extends AppData {
   setCurrentTabId: (id: number) => void;
   createTab: () => number;
-  saveTab: (id: number, updatedTab: ITab) => void;
+  updateTab: (id: number, updatedTab: Partial<ITab>) => void;
   deleteTab: (tabId: number) => void;
 }
 
@@ -61,7 +61,7 @@ export const useAppStore = create<AppStoreState>()((set) => {
       return newTabId;
     },
 
-    saveTab: (id: number, updatedTab: ITab) => {
+    updateTab: (id: number, updatedTab: Partial<ITab>) => {
       set((state) => {
         const newTabs = state.tabs.map((tab) =>
           tab.id !== id ? tab : { ...tab, ...updatedTab },

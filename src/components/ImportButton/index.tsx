@@ -25,7 +25,7 @@ const schema = z.object({
 const ImportModal = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { createTab, saveTab, setCurrentTabId } = useAppStore();
+  const { createTab, updateTab, setCurrentTabId } = useAppStore();
 
   const {
     handleSubmit,
@@ -58,7 +58,7 @@ const ImportModal = () => {
         },
       };
 
-      saveTab(newTabId, newTabData);
+      updateTab(newTabId, newTabData);
       setCurrentTabId(newTabId);
       setIsModalOpen(false);
       reset();
