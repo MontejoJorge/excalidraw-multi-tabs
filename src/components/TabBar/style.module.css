@@ -1,13 +1,15 @@
-.tabBar {
-  align-items: center;
+.container {
+  display: flex;
+  padding: 4px;
   background-color: #FFFFFF; /* --island-bg-color */
   border-bottom: 1px solid rgba(0, 0, 0, 0.1); /*--sidebar-border-color*/
-  display: flex;
   font-family: Assistant, sans-serif;
+}
+
+.tabBar {
+  display: flex;
+  align-items: center;
   gap: 4px;
-  max-height: 44px;
-  min-height: 44px;
-  padding: 4px 16px;
 }
 
 .createTabButton {
@@ -17,7 +19,7 @@
   cursor: pointer;
   display: flex;
   gap: 10px;
-  height: 100%;
+  height: 36px;
   padding: 0.3rem;
   user-select: none;
 

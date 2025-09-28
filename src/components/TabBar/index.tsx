@@ -1,38 +1,41 @@
-import type { ITab } from '../../types';
+import { useAppStore } from '../../store';
 import { PlusIcon } from '../icons';
+import ImportModal from '../ImportButton';
 import Tab from '../Tab';
 import style from './style.module.css';
 
-interface TabBarProps {
-  tabs: ITab[];
-  currentTabId: number;
-  setCurrentTabId: (id: number) => void;
-  createTab: () => void;
-  deleteTab: (id: number) => void;
-}
+const TabBar = () => {
+  const { tabs, currentTabId, setCurrentTabId, createTab, deleteTab } =
+    useAppStore();
 
-const TabBar: React.FC<TabBarProps> = ({
-  tabs,
-  currentTabId,
-  setCurrentTabId,
-  createTab,
-  deleteTab,
-}) => {
+  const handleCreateTabBtnClick = () => {
+    const newTabId = createTab();
+    setCurrentTabId(newTabId);
+  };
+
   return (
-    <div className={style.tabBar}>
-      {tabs.map((tab, index) => (
-        <Tab
-          key={index}
-          tab={tab}
-          setCurrentTabId={setCurrentTabId}
-          currentTabId={currentTabId}
-          deleteTab={deleteTab}
-        />
-      ))}
-      <button className={style.createTabButton} onClick={createTab}>
-        <PlusIcon />
-      </button>
-    </div>
+    <>
+      <div className={style.container}>
+        <div className={style.tabBar}>
+          {tabs.map((tab, index) => (
+            <Tab
+              key={index}
+              tab={tab}
+              setCurrentTabId={setCurrentTabId}
+              currentTabId={currentTabId}
+              deleteTab={deleteTab}
+            />
+          ))}
+        </div>
+        <button
+          className={style.createTabButton}
+          onClick={handleCreateTabBtnClick}
+        >
+          <PlusIcon />
+        </button>
+        <ImportModal />
+      </div>
+    </>
   );
 };
 

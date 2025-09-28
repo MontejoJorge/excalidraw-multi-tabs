@@ -4,11 +4,10 @@ import type { AppState } from '@excalidraw/excalidraw/types';
 import { useCallback } from 'react';
 
 import TabBar from './components/TabBar';
-import useAppData from './hooks/useAppData';
+import { useAppStore } from './store';
 
 function App() {
-  const { tabs, currentTabId, setCurrentTabId, createTab, saveTab, deleteTab } =
-    useAppData();
+  const { tabs, currentTabId, saveTab } = useAppStore();
 
   const currentTab = tabs.find((t) => t.id === currentTabId) || tabs[0];
 
@@ -40,13 +39,7 @@ function App() {
 
   return (
     <>
-      <TabBar
-        tabs={tabs}
-        currentTabId={currentTabId}
-        setCurrentTabId={setCurrentTabId}
-        createTab={createTab}
-        deleteTab={deleteTab}
-      />
+      <TabBar />
       <Excalidraw
         key={currentTabId}
         onChange={handleOnChange}
