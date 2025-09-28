@@ -8,15 +8,16 @@ on:
         type: string
 
 jobs:
-  name: Run ${{ matrix.command }}
-  runs-on: ubuntu-latest
-  strategy:
-    fail-fast: false
-    matrix:
-      command:
-        - lint
-        - typecheck
-
+  quality:
+    name: Run ${{ matrix.command }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        command:
+          - lint
+          - typecheck
+  
     steps:
       - name: Checkout ⬇️
         uses: actions/checkout@4
@@ -31,9 +32,9 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 10
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Run ${{ matrix.command }} ⚙️
-        run: pnpm run ${{ matrix.command }}
+  
+        - name: Install dependencies
+          run: pnpm install --frozen-lockfile
+  
+        - name: Run ${{ matrix.command }} ⚙️
+          run: pnpm run ${{ matrix.command }}
