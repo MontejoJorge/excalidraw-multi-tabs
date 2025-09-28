@@ -5,8 +5,7 @@ import Tab from '../Tab';
 import style from './style.module.css';
 
 const TabBar = () => {
-  const { tabs, currentTabId, setCurrentTabId, createTab, deleteTab } =
-    useAppStore();
+  const { tabs, setCurrentTabId, createTab } = useAppStore();
 
   const handleCreateTabBtnClick = () => {
     const newTabId = createTab();
@@ -18,13 +17,7 @@ const TabBar = () => {
       <div className={style.container}>
         <div className={style.tabBar}>
           {tabs.map((tab, index) => (
-            <Tab
-              key={index}
-              tab={tab}
-              setCurrentTabId={setCurrentTabId}
-              currentTabId={currentTabId}
-              deleteTab={deleteTab}
-            />
+            <Tab key={index} tab={tab} />
           ))}
         </div>
         <button

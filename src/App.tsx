@@ -7,7 +7,7 @@ import TabBar from './components/TabBar';
 import { useAppStore } from './store';
 
 function App() {
-  const { tabs, currentTabId, saveTab } = useAppStore();
+  const { tabs, currentTabId, updateTab } = useAppStore();
 
   const currentTab = tabs.find((t) => t.id === currentTabId) || tabs[0];
 
@@ -16,7 +16,6 @@ function App() {
       if (!currentTab) return;
 
       const updatedTab = {
-        ...currentTab,
         elements: elements,
         appState: {
           viewBackgroundColor: state.viewBackgroundColor,
@@ -27,7 +26,7 @@ function App() {
         },
       };
 
-      saveTab(currentTabId, updatedTab);
+      updateTab(currentTabId, updatedTab);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [currentTabId],
