@@ -10,20 +10,31 @@ permissions:
   id-token: write
 
 jobs:
+  quality_checks:
+    name: Quality checks 👌🧪
+    uses: ./.github/workflows/__quality_checks.yml
+    with:
+      commit: ${{ github.sha }}
+
   build:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
+
     - name: Set up Node.js
       uses: actions/setup-node@v4
+
     - name: Set up pnpm
       uses: pnpm/action-setup@v4
       with:
         version: 10
+
     - name: Install dependencies
       run: pnpm install --frozen-lockfile
+
     - name: Build static files
       run: pnpm run build -- --base=/${{ github.event.repository.name }}/
+
     - name: Upload build
       uses: actions/upload-pages-artifact@v4
       with:
@@ -35,6 +46,7 @@ jobs:
     steps:
     - name: Configure GitHub pages
       uses: actions/configure-pages@v4
+
     - name: Deploy to GitHub pages
       uses: actions/deploy-pages@v4
       

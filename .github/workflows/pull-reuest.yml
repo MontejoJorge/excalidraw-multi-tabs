@@ -1,0 +1,11 @@
+name: Pull Request 📥
+
+on:
+  pull_request:
+
+jobs:
+  quality_checks:
+    name: Quality checks 👌🧪
+    uses: ./.github/workflows/__quality_checks.yml
+    with:
+      commit: ${{ github.event.pull_request.head.sha }}
