@@ -34,7 +34,9 @@ jobs:
       run: pnpm install --frozen-lockfile
 
     - name: Build static files
-      run: pnpm run build -- --base=/${{ github.event.repository.name }}/
+      run: |
+        export VITE_BASE_PATH=/${{ github.event.repository.name }}/
+        pnpm run build
 
     - name: Upload build
       uses: actions/upload-pages-artifact@v4
