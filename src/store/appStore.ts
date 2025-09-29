@@ -44,10 +44,15 @@ export const useAppStore = create<AppStoreState>()((set) => {
     createTab: () => {
       let newTabId: number = -1;
       set((state) => {
-        newTabId = state.tabs.length + 1;
+        const maxId =
+          state.tabs.length > 0
+            ? Math.max(...state.tabs.map((tab) => tab.id))
+            : -1;
+        newTabId = maxId + 1;
+
         const newTab: ITab = {
           id: newTabId,
-          title: `Tab ${state.tabs.length + 1}`,
+          title: `Tab ${newTabId + 1}`,
           elements: [],
           appState: {},
         };
