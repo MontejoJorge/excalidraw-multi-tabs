@@ -6,6 +6,7 @@ import z from 'zod';
 import { useAppStore } from '../../store';
 import type { ITab } from '../../types';
 import { getExcalidrawBoard } from '../../utils/import';
+import Button from '../Button';
 import Modal from '../Modal';
 import styles from './styles.module.css';
 
@@ -77,12 +78,12 @@ const ImportModal = () => {
 
   return (
     <>
-      <button
+      <Button
         className={styles.loadButton}
         onClick={() => setIsModalOpen(true)}
       >
         Import from Excalidraw
-      </button>
+      </Button>
       <Modal isOpen={isModalOpen} onClose={handleModalClose}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <h2 className={styles.title}>Import from Excalidraw</h2>
