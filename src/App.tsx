@@ -3,6 +3,7 @@ import type { OrderedExcalidrawElement } from '@excalidraw/excalidraw/element/ty
 import type { AppState } from '@excalidraw/excalidraw/types';
 import { useCallback } from 'react';
 
+import ShareButton from './components/ShareButton';
 import TabBar from './components/TabBar';
 import { useAppStore } from './store';
 
@@ -32,6 +33,8 @@ function App() {
     [currentTabId],
   );
 
+  const renderTopRightUI = useCallback(() => <ShareButton />, []);
+
   if (!currentTab) {
     return <div>Loading...</div>;
   }
@@ -46,6 +49,7 @@ function App() {
           elements: currentTab.elements,
           appState: currentTab.appState,
         }}
+        renderTopRightUI={renderTopRightUI}
       />
     </>
   );
