@@ -14,6 +14,11 @@ A self-hostable version of Excalidraw with multi-tab support for enhanced drawin
 🐳 **Docker Ready** - Easy deployment with Docker support  
 🚀 **Self-Hostable** - Host it yourself for complete control  
 
+## 🚧 Current Limitations
+
+- [ ] **Link Sharing** – Not possible to share a direct link to a drawing
+- [ ] **Image Import** – Imported images can not be saved
+
 ## 🚀 Quick Start
 
 ### Using Docker
