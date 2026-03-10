@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import { createStore, setMany, delMany, entries } from 'idb-keyval';
 import type { BinaryFileData, BinaryFiles } from '@excalidraw/excalidraw/types';
+import { createStore, delMany, entries, setMany } from 'idb-keyval';
+import { create } from 'zustand';
 
 const excalidrawFilesStore = createStore('excalidraw-db', 'files');
 
@@ -31,10 +31,10 @@ export const useExcalidrawFilesStore = create<ExcalidrawFilesStoreState>()((
     const loadedFiles = await loadInitialFiles();
     set({ files: loadedFiles });
     return loadedFiles;
-  }
+  };
 
   const setFiles = async (files: BinaryFiles) => {
-    const currentKeys = Object.keys(get().files)
+    const currentKeys = Object.keys(get().files);
     const newKeys = Object.keys(files);
 
     const keysToAdd = newKeys.filter((k) => !currentKeys.includes(k));
@@ -57,7 +57,7 @@ export const useExcalidrawFilesStore = create<ExcalidrawFilesStoreState>()((
     }
 
     set({ files });
-  }
+  };
 
   return {
     files: initialFiles,
