@@ -9,13 +9,29 @@ import styles from './style.module.css';
 
 interface TabProps {
   tab: ITab;
+  draggable?: boolean;
+  isDragging?: boolean;
+  isDragOver?: boolean;
+  onDragStart?: (e: React.DragEvent<HTMLDivElement>) => void;
+  onDragOver?: (e: React.DragEvent<HTMLDivElement>) => void;
+  onDrop?: (e: React.DragEvent<HTMLDivElement>) => void;
+  onDragEnd?: (e: React.DragEvent<HTMLDivElement>) => void;
 }
 
 interface FormData {
   title: string;
 }
 
-const Tab = ({ tab }: TabProps) => {
+const Tab = ({
+  tab,
+  draggable = false,
+  isDragging = false,
+  isDragOver = false,
+  onDragStart,
+  onDragOver,
+  onDrop,
+  onDragEnd,
+}: TabProps) => {
   const { currentTabId, setCurrentTabId, updateTab, deleteTab } = useAppStore();
   const [isEditing, setIsEditing] = useState(false);
 
@@ -60,7 +76,16 @@ const Tab = ({ tab }: TabProps) => {
 
   return (
     <div
-      className={clsx(styles.tab, { [styles.active]: isActive })}
+      className={clsx(styles.tab, {
+        [styles.active]: isActive,
+        [styles.dragging]: isDragging,
+        [styles.dragOver]: isDragOver,
+      })}
+      draggable={draggable}
+      onDragStart={onDragStart}
+      onDragOver={onDragOver}
+      onDrop={onDrop}
+      onDragEnd={onDragEnd}
       onClick={() => setCurrentTabId(tab.id)}
     >
       {!isEditing && (

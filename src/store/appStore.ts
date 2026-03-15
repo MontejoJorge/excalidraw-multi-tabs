@@ -8,6 +8,7 @@ interface AppStoreState extends AppData {
   createTab: () => number;
   updateTab: (id: number, updatedTab: Partial<ITab>) => void;
   deleteTab: (tabId: number) => void;
+  moveTab: (tabId: number, targetTabId: number) => void;
 }
 
 const defaultAppData: AppData = {
@@ -94,6 +95,30 @@ export const useAppStore = create<AppStoreState>()((set) => {
         const newAppData: AppData = {
           tabs: newTabs,
           currentTabId: newCurrentTabId,
+        };
+        saveAppData(newAppData);
+        return newAppData;
+      });
+    },
+
+    moveTab: (tabId: number, targetTabId: number) => {
+      set((state) => {
+        if (tabId === targetTabId) return state;
+
+        const sourceIndex = state.tabs.findIndex((tab) => tab.id === tabId);
+        const targetIndex = state.tabs.findIndex(
+          (tab) => tab.id === targetTabId,
+        );
+
+        if (sourceIndex === -1 || targetIndex === -1) return state;
+
+        const newTabs = [...state.tabs];
+        const [movedTab] = newTabs.splice(sourceIndex, 1);
+        newTabs.splice(targetIndex, 0, movedTab);
+
+        const newAppData: AppData = {
+          tabs: newTabs,
+          currentTabId: state.currentTabId,
         };
         saveAppData(newAppData);
         return newAppData;
