@@ -1,3 +1,5 @@
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import clsx from 'clsx';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -9,37 +11,36 @@ import styles from './style.module.css';
 
 interface TabProps {
   tab: ITab;
-  draggable?: boolean;
-  isDragging?: boolean;
-  isDragOver?: boolean;
-  onDragStart?: (e: React.DragEvent<HTMLDivElement>) => void;
-  onDragOver?: (e: React.DragEvent<HTMLDivElement>) => void;
-  onDrop?: (e: React.DragEvent<HTMLDivElement>) => void;
-  onDragEnd?: (e: React.DragEvent<HTMLDivElement>) => void;
 }
 
 interface FormData {
   title: string;
 }
 
-const Tab = ({
-  tab,
-  draggable = false,
-  isDragging = false,
-  isDragOver = false,
-  onDragStart,
-  onDragOver,
-  onDrop,
-  onDragEnd,
-}: TabProps) => {
+const Tab = ({ tab }: TabProps) => {
   const { currentTabId, setCurrentTabId, updateTab, deleteTab } = useAppStore();
   const [isEditing, setIsEditing] = useState(false);
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: tab.id,
+    disabled: isEditing,
+  });
 
   const { register, handleSubmit, reset } = useForm<FormData>({
     defaultValues: { title: tab.title },
   });
 
   const isActive = currentTabId === tab.id;
+  const tabStyle = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -76,16 +77,14 @@ const Tab = ({
 
   return (
     <div
+      ref={setNodeRef}
+      style={tabStyle}
       className={clsx(styles.tab, {
         [styles.active]: isActive,
         [styles.dragging]: isDragging,
-        [styles.dragOver]: isDragOver,
       })}
-      draggable={draggable}
-      onDragStart={onDragStart}
-      onDragOver={onDragOver}
-      onDrop={onDrop}
-      onDragEnd={onDragEnd}
+      {...attributes}
+      {...listeners}
       onClick={() => setCurrentTabId(tab.id)}
     >
       {!isEditing && (

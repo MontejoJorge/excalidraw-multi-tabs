@@ -16,7 +16,6 @@
 
   &:hover {
     background-color: #f1f0ff; /*--button-hover-bg*/
-    cursor: move;
   }
 
   &.active {
@@ -25,11 +24,7 @@
 
   &.dragging {
     opacity: 0.5;
-  }
-
-  &.dragOver {
-    outline: 2px solid #6965db;
-    outline-offset: -2px;
+    z-index: 1;
   }
 
   & button {
