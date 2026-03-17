@@ -20,6 +20,11 @@ interface FormData {
 const Tab = ({ tab, index }: TabProps) => {
   const { currentTabId, setCurrentTabId, updateTab, deleteTab } = useAppStore();
   const [isEditing, setIsEditing] = useState(false);
+
+  const { register, handleSubmit, reset } = useForm<FormData>({
+    defaultValues: { title: tab.title },
+  });
+
   const { ref, isDragging } = useSortable({
     id: tab.id,
     index,
@@ -27,11 +32,8 @@ const Tab = ({ tab, index }: TabProps) => {
     disabled: isEditing,
   });
 
-  const { register, handleSubmit, reset } = useForm<FormData>({
-    defaultValues: { title: tab.title },
-  });
-
   const isActive = currentTabId === tab.id;
+
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
 

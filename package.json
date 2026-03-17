@@ -19,8 +19,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@dnd-kit/react": "0.3.2",
+    "@dnd-kit/abstract": "^0.3.2",
+    "@dnd-kit/dom": "^0.3.2",
     "@dnd-kit/helpers": "0.3.2",
+    "@dnd-kit/react": "0.3.2",
     "@excalidraw/excalidraw": "0.18.0",
     "@hookform/resolvers": "^5.2.2",
     "@tailwindcss/vite": "^4.1.13",

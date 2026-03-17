@@ -1,4 +1,7 @@
-import { DragDropProvider, type DragDropEventHandlers } from '@dnd-kit/react';
+import { RestrictToHorizontalAxis } from '@dnd-kit/abstract/modifiers';
+import { RestrictToElement } from '@dnd-kit/dom/modifiers';
+import { type DragDropEventHandlers, DragDropProvider } from '@dnd-kit/react';
+import { useRef } from 'react';
 
 import { useAppStore } from '../../store';
 import { PlusIcon } from '../icons';
@@ -8,6 +11,7 @@ import style from './style.module.css';
 
 const TabBar = () => {
   const { tabs, setCurrentTabId, createTab, moveTab } = useAppStore();
+  const tabBarRef = useRef<HTMLDivElement>(null);
 
   const handleCreateTabBtnClick = () => {
     const newTabId = createTab();
@@ -30,8 +34,14 @@ const TabBar = () => {
   return (
     <>
       <div className={style.container}>
-        <DragDropProvider onDragEnd={handleDragEnd}>
-          <div className={style.tabBar}>
+        <DragDropProvider
+          onDragEnd={handleDragEnd}
+          modifiers={[
+            RestrictToHorizontalAxis,
+            RestrictToElement.configure({ element: tabBarRef.current }),
+          ]}
+        >
+          <div className={style.tabBar} ref={tabBarRef}>
             {tabs.map((tab, index) => (
               <Tab key={tab.id} tab={tab} index={index} />
             ))}

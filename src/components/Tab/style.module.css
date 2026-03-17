@@ -4,7 +4,7 @@
   border-radius: 6px;
   min-width: 80px;
   max-width: 300px;
-  cursor: pointer;
+  cursor: grab;
   display: flex;
   font-weight: 400;
   gap: 10px;
