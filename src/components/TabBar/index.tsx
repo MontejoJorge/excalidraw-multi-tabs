@@ -1,5 +1,6 @@
 import { RestrictToHorizontalAxis } from '@dnd-kit/abstract/modifiers';
 import { RestrictToElement } from '@dnd-kit/dom/modifiers';
+import { move } from '@dnd-kit/helpers';
 import { type DragDropEventHandlers, DragDropProvider } from '@dnd-kit/react';
 import { useRef } from 'react';
 
@@ -10,7 +11,7 @@ import Tab from '../Tab';
 import style from './style.module.css';
 
 const TabBar = () => {
-  const { tabs, setCurrentTabId, createTab, moveTab } = useAppStore();
+  const { tabs, setCurrentTabId, createTab, setTabs } = useAppStore();
   const tabBarRef = useRef<HTMLDivElement>(null);
 
   const handleCreateTabBtnClick = () => {
@@ -18,17 +19,13 @@ const TabBar = () => {
     setCurrentTabId(newTabId);
   };
 
-  const handleDragEnd: NonNullable<DragDropEventHandlers['onDragEnd']> = ({
-    canceled,
-    operation,
-  }) => {
-    if (canceled) return;
-
-    const sourceId = operation.source?.id;
-    const targetId = operation.target?.id;
-
-    if (sourceId == null || targetId == null || sourceId === targetId) return;
-    moveTab(Number(sourceId), Number(targetId));
+  const handleDragEnd: NonNullable<DragDropEventHandlers['onDragEnd']> = (
+    event,
+  ) => {
+    if (event.canceled) return;
+    const movedTabs = move(tabs, event);
+    if (movedTabs === tabs) return;
+    setTabs(movedTabs);
   };
 
   return (
