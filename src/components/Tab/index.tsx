@@ -1,5 +1,4 @@
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
+import { useSortable } from '@dnd-kit/react/sortable';
 import clsx from 'clsx';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -11,24 +10,20 @@ import styles from './style.module.css';
 
 interface TabProps {
   tab: ITab;
+  index: number;
 }
 
 interface FormData {
   title: string;
 }
 
-const Tab = ({ tab }: TabProps) => {
+const Tab = ({ tab, index }: TabProps) => {
   const { currentTabId, setCurrentTabId, updateTab, deleteTab } = useAppStore();
   const [isEditing, setIsEditing] = useState(false);
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({
+  const { ref, isDragging } = useSortable({
     id: tab.id,
+    index,
+    group: 'tabs',
     disabled: isEditing,
   });
 
@@ -37,11 +32,6 @@ const Tab = ({ tab }: TabProps) => {
   });
 
   const isActive = currentTabId === tab.id;
-  const tabStyle = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
 
@@ -77,14 +67,11 @@ const Tab = ({ tab }: TabProps) => {
 
   return (
     <div
-      ref={setNodeRef}
-      style={tabStyle}
+      ref={ref}
       className={clsx(styles.tab, {
         [styles.active]: isActive,
         [styles.dragging]: isDragging,
       })}
-      {...attributes}
-      {...listeners}
       onClick={() => setCurrentTabId(tab.id)}
     >
       {!isEditing && (

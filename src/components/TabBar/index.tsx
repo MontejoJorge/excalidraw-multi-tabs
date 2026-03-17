@@ -1,15 +1,4 @@
-import {
-  closestCenter,
-  DndContext,
-  type DragEndEvent,
-  PointerSensor,
-  useSensor,
-  useSensors,
-} from '@dnd-kit/core';
-import {
-  horizontalListSortingStrategy,
-  SortableContext,
-} from '@dnd-kit/sortable';
+import { DragDropProvider, type DragDropEventHandlers } from '@dnd-kit/react';
 
 import { useAppStore } from '../../store';
 import { PlusIcon } from '../icons';
@@ -19,43 +8,35 @@ import style from './style.module.css';
 
 const TabBar = () => {
   const { tabs, setCurrentTabId, createTab, moveTab } = useAppStore();
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8,
-      },
-    }),
-  );
 
   const handleCreateTabBtnClick = () => {
     const newTabId = createTab();
     setCurrentTabId(newTabId);
   };
 
-  const handleDragEnd = ({ active, over }: DragEndEvent) => {
-    if (!over || active.id === over.id) return;
-    moveTab(Number(active.id), Number(over.id));
+  const handleDragEnd: NonNullable<DragDropEventHandlers['onDragEnd']> = ({
+    canceled,
+    operation,
+  }) => {
+    if (canceled) return;
+
+    const sourceId = operation.source?.id;
+    const targetId = operation.target?.id;
+
+    if (sourceId == null || targetId == null || sourceId === targetId) return;
+    moveTab(Number(sourceId), Number(targetId));
   };
 
   return (
     <>
       <div className={style.container}>
-        <DndContext
-          collisionDetection={closestCenter}
-          sensors={sensors}
-          onDragEnd={handleDragEnd}
-        >
-          <SortableContext
-            items={tabs.map((tab) => tab.id)}
-            strategy={horizontalListSortingStrategy}
-          >
-            <div className={style.tabBar}>
-              {tabs.map((tab) => (
-                <Tab key={tab.id} tab={tab} />
-              ))}
-            </div>
-          </SortableContext>
-        </DndContext>
+        <DragDropProvider onDragEnd={handleDragEnd}>
+          <div className={style.tabBar}>
+            {tabs.map((tab, index) => (
+              <Tab key={tab.id} tab={tab} index={index} />
+            ))}
+          </div>
+        </DragDropProvider>
         <button
           className={style.createTabButton}
           onClick={handleCreateTabBtnClick}
