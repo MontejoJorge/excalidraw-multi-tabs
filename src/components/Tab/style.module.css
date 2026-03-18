@@ -2,9 +2,9 @@
   align-items: center;
   background-color: transparent;
   border-radius: 6px;
-  min-width: 70px;
+  min-width: 80px;
   max-width: 300px;
-  cursor: pointer;
+  cursor: grab;
   display: flex;
   font-weight: 400;
   gap: 10px;
@@ -20,6 +20,11 @@
 
   &.active {
     background-color: #e0dfff; /*--color-surface-primary-container*/
+  }
+
+  &.dragging {
+    opacity: 0.5;
+    z-index: 1;
   }
 
   & button {
