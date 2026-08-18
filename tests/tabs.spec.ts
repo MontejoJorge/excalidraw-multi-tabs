@@ -80,8 +80,10 @@ test.describe('Tab Management', () => {
     await page.evaluate(() => {
       const raw = localStorage.getItem('excalidraw-tabs-data');
       if (raw) {
-        const data = JSON.parse(raw);
-        data.state.tabs[0].elements = [{ id: 'dummy-1', type: 'rectangle' }];
+        const tabs = data.state ? data.state.tabs : data.tabs;
+        if (tabs && tabs[0]) {
+          tabs[0].elements = [{ id: 'dummy-1', type: 'rectangle' }];
+        }
         localStorage.setItem('excalidraw-tabs-data', JSON.stringify(data));
       }
     });
@@ -167,7 +169,8 @@ test.describe('Tab Management', () => {
             const raw = localStorage.getItem('excalidraw-tabs-data');
             if (!raw) return 0;
             const data = JSON.parse(raw);
-            return data.state?.tabs?.[0]?.elements?.length || 0;
+            const tabs = data.state ? data.state.tabs : data.tabs;
+            return tabs?.[0]?.elements?.length || 0;
           });
         },
         { timeout: 10000 },
@@ -184,7 +187,8 @@ test.describe('Tab Management', () => {
       const raw = localStorage.getItem('excalidraw-tabs-data');
       if (!raw) return 0;
       const data = JSON.parse(raw);
-      return data.state?.tabs?.[1]?.elements?.length || 0;
+      const tabs = data.state ? data.state.tabs : data.tabs;
+      return tabs?.[1]?.elements?.length || 0;
     });
     expect(tab2Initial).toBe(0);
 
@@ -209,7 +213,8 @@ test.describe('Tab Management', () => {
             const raw = localStorage.getItem('excalidraw-tabs-data');
             if (!raw) return 0;
             const data = JSON.parse(raw);
-            return data.state?.tabs?.[1]?.elements?.length || 0;
+            const tabs = data.state ? data.state.tabs : data.tabs;
+            return tabs?.[1]?.elements?.length || 0;
           });
         },
         { timeout: 10000 },
@@ -228,9 +233,10 @@ test.describe('Tab Management', () => {
             const raw = localStorage.getItem('excalidraw-tabs-data');
             if (!raw) return { t1: false, t2: false };
             const data = JSON.parse(raw);
+            const tabs = data.state ? data.state.tabs : data.tabs;
             return {
-              t1: (data.state?.tabs?.[0]?.elements?.length || 0) > 0,
-              t2: (data.state?.tabs?.[1]?.elements?.length || 0) > 0,
+              t1: (tabs?.[0]?.elements?.length || 0) > 0,
+              t2: (tabs?.[1]?.elements?.length || 0) > 0,
             };
           });
         },

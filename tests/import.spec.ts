@@ -183,7 +183,8 @@ test.describe('Import Flow', () => {
             const raw = localStorage.getItem('excalidraw-tabs-data');
             if (!raw) return 0;
             const data = JSON.parse(raw);
-            return data.state?.tabs?.[1]?.elements?.length || 0;
+            const tabs = data.state ? data.state.tabs : data.tabs;
+            return tabs?.[1]?.elements?.length || 0;
           });
         },
         { timeout: 10000 },
