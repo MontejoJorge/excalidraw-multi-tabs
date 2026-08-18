@@ -1,11 +1,10 @@
 import { useSortable } from '@dnd-kit/react/sortable';
 import clsx from 'clsx';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 
 import { useAppStore } from '../../store';
 import type { ITab } from '../../types';
-import { TrashIcon } from '../icons';
+import { GripIcon, TrashIcon } from '../icons';
 import styles from './style.module.css';
 
 interface TabProps {
@@ -13,19 +12,12 @@ interface TabProps {
   index: number;
 }
 
-interface FormData {
-  title: string;
-}
-
 const Tab = ({ tab, index }: TabProps) => {
   const { currentTabId, setCurrentTabId, updateTab, deleteTab } = useAppStore();
   const [isEditing, setIsEditing] = useState(false);
+  const [title, setTitle] = useState(tab.title);
 
-  const { register, handleSubmit, reset } = useForm<FormData>({
-    defaultValues: { title: tab.title },
-  });
-
-  const { ref, isDragging } = useSortable({
+  const { ref, handleRef, isDragging } = useSortable({
     id: tab.id,
     index,
     group: 'tabs',
@@ -50,11 +42,12 @@ const Tab = ({ tab, index }: TabProps) => {
   const handleTitleClick = () => {
     if (!isActive) return;
     setIsEditing(true);
-    reset({ title: tab.title });
+    setTitle(tab.title);
   };
 
-  const onSubmit = (data: FormData) => {
-    const trimmedTitle = data.title.trim();
+  const onSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const trimmedTitle = title.trim();
     if (trimmedTitle && trimmedTitle !== tab.title) {
       const newTab = { ...tab, title: trimmedTitle };
       updateTab(tab.id, newTab);
@@ -64,20 +57,35 @@ const Tab = ({ tab, index }: TabProps) => {
 
   const handleCancel = () => {
     setIsEditing(false);
-    reset({ title: tab.title });
+    setTitle(tab.title);
   };
 
   return (
     <div
       ref={ref}
+      data-testid="tab"
+      data-tab-id={tab.id}
+      data-color={tab.color || 'default'}
       className={clsx(styles.tab, {
         [styles.active]: isActive,
         [styles.dragging]: isDragging,
       })}
       onClick={() => setCurrentTabId(tab.id)}
     >
+      <button
+        ref={handleRef}
+        type="button"
+        data-testid="tab-drag-handle"
+        className={styles.dragHandle}
+        title="Drag to reorder tab"
+        aria-label="Drag to reorder tab"
+      >
+        <GripIcon />
+      </button>
+
       {!isEditing && (
         <span
+          data-testid="tab-title"
           className={clsx(styles.title, { [styles.active]: isActive })}
           onClick={handleTitleClick}
           title={tab.title}
@@ -86,13 +94,15 @@ const Tab = ({ tab, index }: TabProps) => {
         </span>
       )}
       {isEditing && (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={onSubmit} className={styles.editForm}>
           <input
-            {...register('title')}
+            data-testid="tab-title-input"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             className={styles.titleInput}
             type="text"
             autoFocus
-            onBlur={handleSubmit(onSubmit)}
+            onBlur={() => onSubmit()}
             onKeyDown={(e) => {
               if (e.key === 'Escape') {
                 e.preventDefault();
@@ -104,8 +114,12 @@ const Tab = ({ tab, index }: TabProps) => {
       )}
       {isActive && (
         <button
-          className={clsx({ [styles.active]: isActive })}
+          type="button"
+          data-testid="tab-delete-button"
+          className={styles.deleteButton}
           onClick={handleDelete}
+          title="Delete tab"
+          aria-label="Delete tab"
         >
           <TrashIcon />
         </button>

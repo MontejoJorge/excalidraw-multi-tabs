@@ -1,10 +1,10 @@
 # Excalidraw Multi-Tabs
+
 ![Docker Image Version](https://img.shields.io/docker/v/montejojorge/excalidraw-multi-tabs)
 ![Docker Image Size (tag)](https://img.shields.io/docker/image-size/montejojorge/excalidraw-multi-tabs/latest)
 ![Static Badge](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
 A self-hostable version of Excalidraw with multi-tab support for enhanced drawing workflow.
-
 
 ![Excalidraw Multi-Tabs Screenshot](https://i.ibb.co/TDcPRRzF/screely-1759180368656.png)
 

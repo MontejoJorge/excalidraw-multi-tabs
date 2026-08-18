@@ -1,63 +1,225 @@
 .tab {
   align-items: center;
-  background-color: transparent;
-  border-radius: 6px;
+  background-color: var(--tab-bg-inactive, transparent);
+  border-radius: 5px;
+  border: 1.5px solid transparent;
+  width: 80px;
   min-width: 80px;
-  max-width: 300px;
-  cursor: grab;
+  max-width: 80px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  cursor: pointer;
   display: flex;
   font-weight: 400;
-  gap: 10px;
+  gap: 3px;
   font-size: 12px;
-  height: 36px;
-  padding: 10px;
+  height: 28px;
+  padding: 0 4px 0 3px;
   user-select: none;
-  color: #1b1b1f; /*--text-primary-color*/
+  color: var(--text-primary-color);
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
 
   &:hover {
-    background-color: #f1f0ff; /*--button-hover-bg*/
+    background-color: var(--tab-bg-hover, var(--button-hover-bg));
+
+    .dragHandle {
+      opacity: 0.6;
+    }
   }
 
   &.active {
-    background-color: #e0dfff; /*--color-surface-primary-container*/
+    background-color: var(
+      --tab-bg-active,
+      var(--color-surface-primary-container)
+    );
+    border-color: var(--tab-indicator, var(--color-primary));
+    font-weight: 500;
+
+    .dragHandle {
+      opacity: 0.75;
+    }
   }
 
   &.dragging {
-    opacity: 0.5;
-    z-index: 1;
+    opacity: 0.4;
+    z-index: 10;
+  }
+}
+
+/* Color Palette - Light Mode */
+.tab[data-color='default'] {
+  --tab-bg-inactive: rgba(105, 101, 219, 0.12);
+  --tab-bg-hover: rgba(105, 101, 219, 0.2);
+  --tab-bg-active: var(--color-surface-primary-container, #e0dfff);
+  --tab-indicator: var(--color-primary, #6965db);
+}
+.tab[data-color='blue'] {
+  --tab-bg-inactive: rgba(59, 130, 246, 0.14);
+  --tab-bg-hover: rgba(59, 130, 246, 0.22);
+  --tab-bg-active: rgba(59, 130, 246, 0.32);
+  --tab-indicator: #2563eb;
+}
+.tab[data-color='emerald'] {
+  --tab-bg-inactive: rgba(16, 185, 129, 0.14);
+  --tab-bg-hover: rgba(16, 185, 129, 0.22);
+  --tab-bg-active: rgba(16, 185, 129, 0.32);
+  --tab-indicator: #059669;
+}
+.tab[data-color='amber'] {
+  --tab-bg-inactive: rgba(245, 158, 11, 0.15);
+  --tab-bg-hover: rgba(245, 158, 11, 0.24);
+  --tab-bg-active: rgba(245, 158, 11, 0.34);
+  --tab-indicator: #d97706;
+}
+.tab[data-color='purple'] {
+  --tab-bg-inactive: rgba(168, 85, 247, 0.14);
+  --tab-bg-hover: rgba(168, 85, 247, 0.22);
+  --tab-bg-active: rgba(168, 85, 247, 0.32);
+  --tab-indicator: #9333ea;
+}
+.tab[data-color='rose'] {
+  --tab-bg-inactive: rgba(244, 63, 94, 0.14);
+  --tab-bg-hover: rgba(244, 63, 94, 0.22);
+  --tab-bg-active: rgba(244, 63, 94, 0.32);
+  --tab-indicator: #e11d48;
+}
+.tab[data-color='cyan'] {
+  --tab-bg-inactive: rgba(6, 182, 212, 0.14);
+  --tab-bg-hover: rgba(6, 182, 212, 0.22);
+  --tab-bg-active: rgba(6, 182, 212, 0.32);
+  --tab-indicator: #0891b2;
+}
+
+/* Color Palette - Dark Mode */
+:global([data-theme='dark']) .tab[data-color='default'] {
+  --tab-bg-inactive: rgba(123, 119, 242, 0.16);
+  --tab-bg-hover: rgba(123, 119, 242, 0.26);
+  --tab-bg-active: var(--color-surface-primary-container, #3c3a52);
+  --tab-indicator: var(--color-primary-hover, #7b77f2);
+}
+:global([data-theme='dark']) .tab[data-color='blue'] {
+  --tab-bg-inactive: rgba(96, 165, 250, 0.18);
+  --tab-bg-hover: rgba(96, 165, 250, 0.28);
+  --tab-bg-active: rgba(96, 165, 250, 0.4);
+  --tab-indicator: #60a5fa;
+}
+:global([data-theme='dark']) .tab[data-color='emerald'] {
+  --tab-bg-inactive: rgba(52, 211, 153, 0.18);
+  --tab-bg-hover: rgba(52, 211, 153, 0.28);
+  --tab-bg-active: rgba(52, 211, 153, 0.4);
+  --tab-indicator: #34d399;
+}
+:global([data-theme='dark']) .tab[data-color='amber'] {
+  --tab-bg-inactive: rgba(251, 191, 36, 0.18);
+  --tab-bg-hover: rgba(251, 191, 36, 0.28);
+  --tab-bg-active: rgba(251, 191, 36, 0.4);
+  --tab-indicator: #fbbf24;
+}
+:global([data-theme='dark']) .tab[data-color='purple'] {
+  --tab-bg-inactive: rgba(192, 132, 252, 0.18);
+  --tab-bg-hover: rgba(192, 132, 252, 0.28);
+  --tab-bg-active: rgba(192, 132, 252, 0.4);
+  --tab-indicator: #c084fc;
+}
+:global([data-theme='dark']) .tab[data-color='rose'] {
+  --tab-bg-inactive: rgba(251, 113, 133, 0.18);
+  --tab-bg-hover: rgba(251, 113, 133, 0.28);
+  --tab-bg-active: rgba(251, 113, 133, 0.4);
+  --tab-indicator: #fb7185;
+}
+:global([data-theme='dark']) .tab[data-color='cyan'] {
+  --tab-bg-inactive: rgba(34, 211, 238, 0.18);
+  --tab-bg-hover: rgba(34, 211, 238, 0.28);
+  --tab-bg-active: rgba(34, 211, 238, 0.4);
+  --tab-indicator: #22d3ee;
+}
+
+.dragHandle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 20px;
+  border: none;
+  background: transparent;
+  color: var(--text-primary-color);
+  opacity: 0.25;
+  cursor: grab;
+  border-radius: 3px;
+  padding: 0;
+  flex-shrink: 0;
+  transition:
+    opacity 0.15s ease,
+    background-color 0.15s ease;
+
+  &:hover {
+    opacity: 1 !important;
+    background-color: var(--sidebar-border-color);
   }
 
-  & button {
-    border-radius: 4px;
-    cursor: pointer;
-    padding: 4px;
-
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.1);
-    }
+  &:active {
+    cursor: grabbing;
+    opacity: 1 !important;
   }
 }
 
 .title {
   flex: 1;
+  min-width: 0;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  cursor: pointer;
+  line-height: 28px;
+}
 
-  &.active {
-    cursor: text;
-  }
+.editForm {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
 }
 
 .titleInput {
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid #d0d0d0;
-  border-radius: 4px;
+  background: var(--input-bg);
+  color: var(--text-primary-color);
+  border: 1px solid var(--input-border);
+  border-radius: 3px;
   width: 100%;
+  min-width: 0;
   outline: none;
-  padding: 2px 4px;
+  padding: 1px 4px;
+  font-size: 12px;
+  height: 22px;
 
   &:focus {
-    border-color: #6965db;
+    border-color: var(--color-primary);
+  }
+}
+
+.deleteButton {
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  border: none;
+  background: transparent;
+  color: var(--text-primary-color);
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.55;
+  flex-shrink: 0;
+  transition:
+    opacity 0.15s ease,
+    background-color 0.15s ease;
+
+  &:hover {
+    opacity: 1;
+    background-color: var(--sidebar-border-color);
   }
 }
