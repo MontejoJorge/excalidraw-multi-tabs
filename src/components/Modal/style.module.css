@@ -4,7 +4,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #12121233;
+  background-color: var(--modal-overlay-bg);
+  backdrop-filter: blur(2px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -12,10 +13,13 @@
 }
 
 .modal {
-  background: white;
+  background: var(--modal-bg);
+  color: var(--text-primary-color);
   padding: 2.5rem;
-  border-radius: 4px;
-  min-width: 300px;
-  border-radius: .75rem;
-  border: 1px solid #ebebeb;
+  border-radius: 0.75rem;
+  min-width: 320px;
+  max-width: 480px;
+  width: 90%;
+  border: 1px solid var(--modal-border);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.24);
 }

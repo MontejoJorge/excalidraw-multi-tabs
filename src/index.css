@@ -1,4 +1,36 @@
-@import "tailwindcss";
+:root {
+  --island-bg-color: #ffffff;
+  --sidebar-border-color: rgba(0, 0, 0, 0.1);
+  --text-primary-color: #1b1b1f;
+  --button-hover-bg: #f1f0ff;
+  --color-surface-primary-container: #e0dfff;
+  --color-surface-primary-container-hover: #d2d0ff;
+  --input-bg: rgba(255, 255, 255, 0.8);
+  --input-border: #d0d0d0;
+  --color-primary: #6965db;
+  --color-primary-hover: #5753c9;
+  --modal-overlay-bg: rgba(0, 0, 0, 0.35);
+  --modal-bg: #ffffff;
+  --modal-border: #ebebeb;
+  --modal-text-muted: #5f5f6e;
+}
+
+[data-theme='dark'] {
+  --island-bg-color: #121212;
+  --sidebar-border-color: rgba(255, 255, 255, 0.1);
+  --text-primary-color: #f0f0f4;
+  --button-hover-bg: #2e2d38;
+  --color-surface-primary-container: #3c3a52;
+  --color-surface-primary-container-hover: #484663;
+  --input-bg: #1e1e24;
+  --input-border: #424153;
+  --color-primary: #6965db;
+  --color-primary-hover: #7b77f2;
+  --modal-overlay-bg: rgba(0, 0, 0, 0.65);
+  --modal-bg: #232329;
+  --modal-border: #383747;
+  --modal-text-muted: #a4a4b5;
+}
 
 * {
   margin: 0;
@@ -12,6 +44,8 @@
   width: 100vw;
   display: flex;
   flex-direction: column;
+  background-color: var(--island-bg-color);
+  color: var(--text-primary-color);
 }
 
 @font-face {

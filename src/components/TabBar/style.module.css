@@ -1,30 +1,75 @@
 .container {
   display: flex;
-  padding: 4px;
-  background-color: #FFFFFF; /* --island-bg-color */
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1); /*--sidebar-border-color*/
+  align-items: center;
+  padding: 2px 6px;
+  height: 32px;
+  min-height: 32px;
+  background-color: var(--island-bg-color);
+  border-bottom: 1px solid var(--sidebar-border-color);
   font-family: Assistant, sans-serif;
+  color: var(--text-primary-color);
 }
 
 .tabBar {
   display: flex;
   align-items: center;
-  gap: 4px;
-  margin-right: 5px;
+  gap: 3px;
+  margin-right: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabBar::-webkit-scrollbar {
+  display: none;
 }
 
 .createTabButton {
   align-items: center;
   background-color: transparent;
-  border-radius: 6px;
+  border-radius: 4px;
+  border: none;
+  color: var(--text-primary-color);
   cursor: pointer;
   display: flex;
-  gap: 10px;
-  height: 36px;
-  padding: 0.3rem;
+  justify-content: center;
+  height: 26px;
+  width: 26px;
+  min-width: 26px;
+  padding: 2px;
   user-select: none;
+  transition: background-color 0.15s ease;
 
   &:hover {
-    background-color: #f1f0ff; /*--button-hover-bg*/
+    background-color: var(--button-hover-bg);
+  }
+}
+
+.actionsRight {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.themeToggleButton {
+  align-items: center;
+  background-color: transparent;
+  border-radius: 4px;
+  border: none;
+  color: var(--text-primary-color);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  height: 26px;
+  width: 26px;
+  min-width: 26px;
+  padding: 2px;
+  user-select: none;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+
+  &:hover {
+    background-color: var(--button-hover-bg);
   }
 }
