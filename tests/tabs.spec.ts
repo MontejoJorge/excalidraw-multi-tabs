@@ -351,10 +351,10 @@ test.describe('Tab Management', () => {
     await expect(reloadedTab2).toHaveAttribute('data-color', secondColor!);
   });
 
-  test('seamlessly migrates and preserves legacy un-wrapped excalidraw-tabs-data saves', async ({
+  test('persists and loads flat excalidraw-tabs-data structure across sessions', async ({
     page,
   }) => {
-    // 1. Seed legacy format into localStorage (pre-Zustand-persist structure)
+    // 1. Seed flat data into localStorage
     await page.addInitScript(() => {
       const legacyData = {
         tabs: [

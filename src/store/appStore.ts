@@ -114,35 +114,38 @@ export const useAppStore = create<AppStoreState>()(
           const str = localStorage.getItem(name);
           if (!str) return null;
           try {
-            const parsed = JSON.parse(str);
-            // Backward compatibility with legacy un-wrapped state format: { tabs: [...], currentTabId: 0 }
-            if (parsed && Array.isArray(parsed.tabs) && !parsed.state) {
-              return {
-                state: {
-                  tabs: parsed.tabs.map((tab: ITab) => ({
-                    ...tab,
-                    color: tab.color || 'default',
-                  })),
-                  currentTabId:
-                    typeof parsed.currentTabId === 'number'
-                      ? parsed.currentTabId
-                      : 0,
-                  theme: getInitialTheme(),
-                },
-                version: 0,
-              };
-            }
-            return parsed;
+            const data = JSON.parse(str);
+            return {
+              state: {
+                tabs: Array.isArray(data.tabs)
+                  ? data.tabs.map((tab: ITab) => ({
+                      ...tab,
+                      color: tab.color || 'default',
+                    }))
+                  : defaultAppData.tabs,
+                currentTabId:
+                  typeof data.currentTabId === 'number'
+                    ? data.currentTabId
+                    : defaultAppData.currentTabId,
+                theme: data.theme || getInitialTheme(),
+              },
+              version: 0,
+            };
           } catch {
             return null;
           }
         },
         setItem: (name, value) => {
-          localStorage.setItem(name, JSON.stringify(value));
+          localStorage.setItem(
+            name,
+            JSON.stringify({
+              tabs: value.state.tabs,
+              currentTabId: value.state.currentTabId,
+              theme: value.state.theme,
+            }),
+          );
         },
-        removeItem: (name) => {
-          localStorage.removeItem(name);
-        },
+        removeItem: (name) => localStorage.removeItem(name),
       },
     },
   ),
