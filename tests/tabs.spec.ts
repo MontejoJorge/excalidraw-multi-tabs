@@ -344,4 +344,63 @@ test.describe('Tab Management', () => {
     await expect(reloadedTab1).toHaveAttribute('data-color', initialColor!);
     await expect(reloadedTab2).toHaveAttribute('data-color', secondColor!);
   });
+
+  test('seamlessly migrates and preserves legacy un-wrapped excalidraw-tabs-data saves', async ({
+    page,
+  }) => {
+    // 1. Seed legacy format into localStorage (pre-Zustand-persist structure)
+    await page.addInitScript(() => {
+      const legacyData = {
+        tabs: [
+          {
+            id: 0,
+            title: 'Legacy Architecture Diagram',
+            elements: [
+              {
+                id: 'legacy-elem-1',
+                type: 'rectangle',
+                x: 50,
+                y: 50,
+                width: 120,
+                height: 80,
+                strokeColor: '#000000',
+                backgroundColor: 'transparent',
+              },
+            ],
+            appState: {},
+          },
+          {
+            id: 1,
+            title: 'Legacy Flowchart',
+            elements: [],
+            appState: {},
+          },
+        ],
+        currentTabId: 0,
+      };
+      localStorage.setItem('excalidraw-tabs-data', JSON.stringify(legacyData));
+    });
+
+    await page.goto('/');
+
+    // 2. Verify all legacy tabs and titles loaded without data loss
+    const tabs = page.getByTestId('tab');
+    await expect(tabs).toHaveCount(2);
+    await expect(tabs.nth(0).getByTestId('tab-title')).toHaveText(
+      'Legacy Architecture Diagram',
+    );
+    await expect(tabs.nth(1).getByTestId('tab-title')).toHaveText(
+      'Legacy Flowchart',
+    );
+
+    // 3. Verify elements from legacy save are intact in store
+    const storeElements = await page.evaluate(() => {
+      const raw = localStorage.getItem('excalidraw-tabs-data');
+      if (!raw) return 0;
+      const data = JSON.parse(raw);
+      const tabs = data.state ? data.state.tabs : data.tabs;
+      return tabs?.[0]?.elements?.length || 0;
+    });
+    expect(storeElements).toBe(1);
+  });
 });

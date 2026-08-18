@@ -17,7 +17,7 @@ export const useExcalidrawSync = () => {
   const { setFiles, getFiles } = useExcalidrawFilesStore();
   const [api, setApi] = useState<ExcalidrawImperativeAPI | null>(null);
 
-  const isSwitchingTabRef = useRef(false);
+  const isSwitchingTabRef = useRef(true);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -71,23 +71,25 @@ export const useExcalidrawSync = () => {
     [updateTab, setFiles],
   );
 
-  const initialTab =
-    useAppStore.getState().tabs.find((t) => t.id === currentTabId) ||
-    useAppStore.getState().tabs[0];
-
   return {
     excalidrawProps: {
       excalidrawAPI: setApi,
       theme,
       onChange,
-      initialData: async () => ({
-        elements: initialTab?.elements || [],
-        appState: {
-          ...initialTab?.appState,
-          theme,
-        },
-        files: await getFiles(),
-      }),
+      initialData: async () => {
+        const activeId = useAppStore.getState().currentTabId;
+        const currentTab =
+          useAppStore.getState().tabs.find((t) => t.id === activeId) ||
+          useAppStore.getState().tabs[0];
+        return {
+          elements: currentTab?.elements || [],
+          appState: {
+            ...currentTab?.appState,
+            theme,
+          },
+          files: await getFiles(),
+        };
+      },
     },
   };
 };
